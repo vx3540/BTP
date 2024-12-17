@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author's Works</title>
+    <style>
+        /* General Reset */
+        body {
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('book_background.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* Book Container */
+        .book {
+            display: flex;
+            width: 80%;
+            height: 80%;
+            max-width: 1000px;
+            background: #fdf8e3; /* Parchment-like background */
+            border: 2px solid #d4c2a5;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Book Pages */
+        .book-left, .book-right {
+            flex: 1;
+            padding: 30px 20px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .book-left {
+            background: linear-gradient(to right, #fdf8e3, #f8f1d6);
+            border-right: 2px solid #d4c2a5;
+            box-shadow: inset -5px 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .book-right {
+            background: linear-gradient(to left, #fdf8e3, #f8f1d6);
+            box-shadow: inset 5px 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Book Binding */
+        .book::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 10px;
+            background: #d4c2a5;
+            box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.3);
+            transform: translateX(-50%);
+        }
+
+        /* Titles */
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #5a3e2b;
+            text-align: center;
+            border-bottom: 2px solid #c7b299;
+            padding-bottom: 10px;
+        }
+
+        /* Author's Bio & Works */
+        #author-bio {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #5a3e2b;
+            margin-bottom: 20px;
+        }
+
+        .work-item {
+            margin: 8px 0;
+            padding: 10px;
+            background: #f9f4e8;
+            border: 1px solid #d4c2a5;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .work-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Author Image */
+        #author-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #d4c2a5;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            margin: 0 auto 15px;
+            display: block;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    <!-- Neo4j Driver -->
+    <script src="https://cdn.jsdelivr.net/npm/neo4j-driver"></script>
+</head>
+<body>
+    <div class="book">
+        <!-- Left Page: Author's Data -->
+        <div class="book-left">
+            <img id="author-image" src="" alt="Author Image" style="display: none;">
+            <h2 id="author-name">Loading Author...</h2>
+            <p id="author-bio">Fetching data...</p>
+        </div>
+
+        <!-- Right Page: Works by the Author -->
+        <div class="book-right">
+            <h2>Works</h2>
+            <div id="works-list">Fetching works...</div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const authorName = urlParams.get("author");
+
+        document.getElementById("author-name").textContent = authorName;
+
+        async function fetchAuthorData(authorName) {
+            const driver = neo4j.driver(
+                "bolt://localhost:7687",
+                neo4j.auth.basic("neo4j", "123456789")
+            );
+            const session = driver.session();
+
+            try {
+                const result = await session.run(`
+                    MATCH (a:Author {name: $authorName})-[:WROTE]->(w:Work)
+                    RETURN a.bio AS bio, a.image_data AS imageData, w.title AS workTitle
+                `, { authorName });
+
+                const records = result.records;
+
+                // Populate Author Data
+                const bio = records.length > 0 && records[0].get("bio") 
+                            ? records[0].get("bio") 
+                            : "No biography available.";
+                document.getElementById("author-bio").textContent = bio;
+
+                // Populate Author Image
+                const imageData = records.length > 0 ? records[0].get("imageData") : null;
+                if (imageData) {
+                    const imageElement = document.getElementById("author-image");
+                    imageElement.src = `data:image/jpeg;base64,${imageData}`;
+                    imageElement.style.display = "block";
+                }
+
+                // Populate Works List
+                const worksList = document.getElementById("works-list");
+                worksList.innerHTML = ""; // Clear placeholder
+
+                const works = records.map(record => record.get("workTitle")).filter(Boolean);
+                if (works.length === 0) {
+                    worksList.textContent = "No works found.";
+                } else {
+                    works.forEach(work => {
+                        const workItem = document.createElement("div");
+                        workItem.classList.add("work-item");
+                        workItem.textContent = work;
+                        worksList.appendChild(workItem);
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                document.getElementById("author-bio").textContent = "Error loading data.";
+                document.getElementById("works-list").textContent = "Unable to load works.";
+            } finally {
+                await session.close();
+                driver.close();
+            }
+        }
+
+        fetchAuthorData(authorName);
+    </script>
+</body>
+</html>

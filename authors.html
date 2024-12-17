@@ -119,7 +119,6 @@ async function fetchAuthorsAndImage(locationName) {
     }
 }
 
-// Function to display authors and set background
 async function displayAuthors() {
     const { authors, locationImageData } = await fetchAuthorsAndImage(locationName);
 
@@ -141,20 +140,20 @@ async function displayAuthors() {
         const authorCard = document.createElement("div");
         authorCard.classList.add("author-card");
 
-        // const authorImage = document.createElement("img");
-        // authorImage.src = `data:image/jpeg;base64,${author.imageData}`;
-        // authorImage.alt = author.name;
+        // Author's name as a clickable link
+        const authorNameLink = document.createElement("a");
+        authorNameLink.href = `book_view.html?author=${encodeURIComponent(author.name)}`;
+        authorNameLink.classList.add("author-name");
+        authorNameLink.textContent = author.name;
+        authorNameLink.style.textDecoration = "none"; // Optional: Remove underline
+        authorNameLink.style.cursor = "pointer"; // Indicate it's clickable
 
-        const authorName = document.createElement("div");
-        authorName.classList.add("author-name");
-        authorName.textContent = author.name;
-
-        // authorCard.appendChild(authorImage);
-        authorCard.appendChild(authorName);
+        authorCard.appendChild(authorNameLink);
 
         authorsList.appendChild(authorCard);
     });
 }
+
 
 displayAuthors();
 
