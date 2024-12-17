@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bayaz-E-Hayat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/93/Hyderabad_map_1914.jpg'); /* Set the background image */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        #menu-container {
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background for contrast */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #view-locations-btn {
+            font-size: 1.2em;
+            padding: 15px 30px;
+            background-color: #FF6347; /* Tomato color */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        #view-locations-btn:hover {
+            background-color: #FF4500; /* Darker tomato color */
+            transform: scale(1.05);
+        }
+
+        #view-locations-btn:active {
+            transform: scale(0.98);
+        }
+
+    </style>
+</head>
+<body>
+    <div id="menu-container">
+        <h1>Welcome to Bayaz-E-Hayat</h1>
+        <button id="view-locations-btn">View Literary Locations in Hyderabad</button>
+    </div>
+
+    <script>
+        document.getElementById('view-locations-btn').addEventListener('click', function() {
+            // Redirect to the locations map page
+            window.location.href = "Vis1.html"; // Assuming your map page is 'map.html'
+        });
+    </script>
+</body>
+</html>

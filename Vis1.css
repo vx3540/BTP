@@ -1,0 +1,135 @@
+/* Ensure html and body take up full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex; /* Flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    background-color: #f5f5f5; /* Light gray background for contrast */
+    font-family: 'Arial', sans-serif; /* Better font choice */
+}
+
+/* Header Styling */
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333; /* Darker text for contrast */
+    margin-bottom: 30px; /* Space below the title */
+}
+
+/* Map container */
+#map {
+    width: 1500px; /* Set map width to 90% of the screen */
+    height: 900px; /* Set height to 60% of the viewport height */
+    /* max-width: 1600px;  */
+    /* max-height: 800px; */
+    border-radius: 12px; /* Rounded corners for the map */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Bookshelf Section */
+#bookshelf {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    background-size: contain; /* Fit the full image without cropping */
+    background-repeat: no-repeat; /* Prevent tiling */
+    background-position: center; /* Center the image */
+    border-radius: 10px;
+    border: 1px solid #ddd; /* Soft border color */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Shelf Styling */
+.shelf {
+    border: 2px solid #e0e0e0; /* Lighter border color */
+    padding: 15px;
+    margin: 15px;
+    width: 220px; /* Slightly wider shelves */
+    background-color: #fff; /* White background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for shelves */
+.shelf:hover {
+    transform: translateY(-5px); /* Slight lift effect */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+/* Container for books (works) */
+.works-container {
+    margin-top: 20px;
+    padding: 10px;
+}
+
+/* Work styling */
+.work {
+    background-color: #fff; /* White background */
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Light shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for works */
+.work:hover {
+    transform: translateY(-3px); /* Slight lift effect */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+}
+
+.work h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333; /* Dark text color */
+}
+
+.work p {
+    font-size: 1rem;
+    color: #555; /* Lighter text for paragraph */
+    margin-top: 5px;
+}
+
+/* Authors Menu */
+.authors-menu {
+    max-width: 250px;
+    overflow-y: auto;
+    max-height: 200px; /* Increased height for larger lists */
+    border-radius: 10px;
+    background-color: #fff; /* White background for menu */
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 10px;
+}
+
+/* Hover effect for author items */
+.authors-menu div:hover {
+    background-color: #f7f7f7; /* Light hover effect */
+    cursor: pointer;
+}
+
+/* Image Styling */
+.image-style {
+    border: 3px solid #3498db; /* Blue border for images */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease;
+}
+
+.image-style:hover {
+    border-color: #e74c3c; /* Red border on hover */
+}
+
+/* Location Name Styling */
+.location-name {
+    font-size: 1rem; /* Adjusted font size */
+    font-weight: bold;
+    color: #333; /* Dark gray text */
+    text-align: center;
+    margin-top: 10px;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+}
