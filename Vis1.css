@@ -2,31 +2,36 @@
 html, body {
     height: 100%;
     margin: 0;
-    display: flex; /* Flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    background-color: #f5f5f5; /* Light gray background for contrast */
+    display: block; /* Change to block layout */
     font-family: 'Arial', sans-serif; /* Better font choice */
 }
 
-/* Header Styling */
 h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: bold;
+    font-family: 'Georgia', serif;
+    color:black;
     text-align: center;
-    color: #333; /* Darker text for contrast */
-    margin-bottom: 30px; /* Space below the title */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    border-bottom: 3px solid black;
+    padding-bottom: 10px;
+    width: fit-content;
+    margin: 0 auto;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
+
 
 /* Map container */
 #map {
-    width: 1500px; /* Set map width to 90% of the screen */
-    height: 900px; /* Set height to 60% of the viewport height */
-    /* max-width: 1600px;  */
-    /* max-height: 800px; */
+    width: 100%; /* Full width */
+    height: calc(100vh - 100px); /* Adjust height to account for title */
     border-radius: 12px; /* Rounded corners for the map */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
+
+
 
 /* Bookshelf Section */
 #bookshelf {

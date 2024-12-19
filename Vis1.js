@@ -6,15 +6,39 @@ const driver = neo4j.driver(
 const session = driver.session();
 
 // Initialize the Leaflet map
-const map = L.map('map').setView([17.4, 78.5], 12); // Set initial coordinates to Hyderabad's center
-map.setZoom(map.getZoom() - 1);
+const map = L.map('map', { zoomControl: true }).setView([17.4, 78.5], 12);
 
-// Set up the map tile layer (using OpenStreetMap)
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+// Define tile layers
+const lightLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+});
 
-// Function to fetch authors for a location (as you already have)
+const darkLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+});
+
+const satelliteLayer = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+});
+
+// Add the default tile layer
+lightLayer.addTo(map);
+
+// Add layer control
+const baseMaps = {
+    "Light Mode": lightLayer,
+    "Dark Mode": darkLayer,
+    "Satellite": satelliteLayer
+};
+L.control.layers(baseMaps).addTo(map);
+
+// Adjust map size when resizing browser
+window.addEventListener('resize', () => {
+    const mapElement = document.getElementById('map');
+    mapElement.style.height = `${window.innerHeight - 50}px`; // Dynamic height minus header
+    map.invalidateSize(); // Recalculate map size
+})
+// Function to fetch authors for a location
 async function fetchAuthorsForLocation(locationName) {
     try {
         const result = await session.run(`
@@ -68,8 +92,9 @@ function showImagePopup(imageData, locationName) {
         const img = document.createElement("img");
         img.src = `data:image/jpeg;base64,${imageData}`;
         img.alt = locationName;
-        img.style.width = "200px";
-        img.style.height = "200px";
+        img.style.width = "100%";
+        img.style.maxWidth = "300px";
+        img.style.height = "auto";
         img.style.objectFit = "cover";
         img.style.cursor = "pointer";
         popup.appendChild(img);
@@ -82,35 +107,67 @@ function showImagePopup(imageData, locationName) {
     }
 
     // Close the popup when clicking anywhere else on the map
-    map.on("click", function() {
+    map.on("click", function () {
         popup.remove();
     });
 }
 
-
 // Function to fetch locations and add them to the map
 async function fetchLocations() {
     try {
+        const customIcon = L.icon({
+            iconUrl: 'images/blue-marker.png', // Path to the default marker image
+            iconSize: [40, 40], // Adjust size to fit your design
+            iconAnchor: [15, 45], // Anchor the bottom center of the icon
+            popupAnchor: [0, -45] // Adjust popup position relative to the icon
+        });
+        
+        const hoverIcon = L.icon({
+            iconUrl: 'images/red-marker.png', // Path to the hover marker image
+            iconSize: [40, 40],
+            iconAnchor: [15, 45],
+            popupAnchor: [0, -45]
+        });
+        
         const result = await session.run(`
             MATCH (l:Location)
             RETURN l.name AS locationName, l.image_data AS imageData, l.coordinates AS coordinates
         `);
-
+        
         result.records.forEach((record) => {
             const locationName = record.get("locationName") || "Unknown Location";
-            const imageData = record.get("imageData");
             const coordinates = record.get("coordinates");
-        
-            if (!coordinates) return; // Skip if no coordinates available
-        
-            const [latitude, longitude] = coordinates; // Extract latitude and longitude
-        
-            // Add a marker to the map for the location
-            const marker = L.marker([latitude, longitude]).addTo(map);
-            marker.bindPopup(`<b>${locationName}</b>`).openPopup();
+            const imageData = record.get("imageData");
 
-            // When the marker is clicked, show the image popup
-            marker.on("click", () => showImagePopup(imageData, locationName));
+            if (!coordinates) return;
+        
+            const [latitude, longitude] = coordinates;
+        
+            const marker = L.marker([latitude, longitude], { icon: customIcon });
+        
+            // Change to hover icon on mouseover
+            marker.on("mouseover", () => {
+                marker.setIcon(hoverIcon);
+            });
+        
+            // Revert to default icon on mouseout
+            marker.on("mouseout", () => {
+                marker.setIcon(customIcon);
+            });
+        
+            // Add popup and click behavior
+            marker.bindPopup(`
+                <div style="text-align: center;">
+                    <h3>${locationName}</h3>
+                </div>
+            `);
+        
+            marker.on("click", () => {
+                map.flyTo([latitude, longitude], 15, { duration: 1.5 });
+                showImagePopup(imageData, locationName);
+            });
+        
+            marker.addTo(map);
         });
         
     } catch (error) {
