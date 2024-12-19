@@ -1,7 +1,8 @@
 const driver = neo4j.driver(
-    "bolt://localhost:7687",
-    neo4j.auth.basic("neo4j", "123456789")
+    "neo4j+s://833f1130.databases.neo4j.io",
+    neo4j.auth.basic("neo4j", "yEYB1EejTenVHaf3hebEhiXw8t0I_ynhjSCvv8odEmA")
 );
+
 
 const session = driver.session();
 

@@ -7,49 +7,64 @@
     <style>
         /* General Reset */
         body {
-            font-family: 'Georgia', serif;
+            font-family: 'Cursive', serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: url('book_background.jpg') no-repeat center center fixed;
-            background-size: cover;
+            background: linear-gradient(to bottom, #e8dbc5, #d4c3a2); 
         }
 
         /* Book Container */
         .book {
-            display: flex;
-            width: 80%;
-            height: 80%;
-            max-width: 1000px;
-            background: #fdf8e3; /* Parchment-like background */
-            border: 2px solid #d4c2a5;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-            animation: fadeIn 1.5s ease-in-out;
-        }
+            margin-top: 70px;
+    display: flex;
+    width: 80%;
+    height: 80%;
+    max-width: 1000px;
+    background: url('https://img.freepik.com/free-photo/wooden-floor-background_53876-88628.jpg');
+    border: 5px solid #7b5a33;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    position: relative;
+    /* animation: fadeIn 1.5s ease-in-out; */
+
+    /* Add perspective and 3D rotation for curved appearance */
+    transform: perspective(1000px) rotateX(1deg) rotateY(1deg);
+    transform-style: preserve-3d;
+}
+
+
 
         /* Book Pages */
         .book-left, .book-right {
             flex: 1;
-            padding: 30px 20px;
+            padding: 30px;
             overflow-y: auto;
             position: relative;
+            background: linear-gradient(to bottom, #f9f3e6, #ede0ca);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3), inset 0 -1px 0 rgba(255, 255, 255, 0.5);
+            background: url('https://img.freepik.com/free-photo/wooden-floor-background_53876-88628.jpg');
+            /* background-image: repeating-linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.6) 0px,
+                rgba(255, 255, 255, 0.6) 1px,
+                transparent 2px,
+                transparent 15px
+            ); */
         }
 
         .book-left {
-            background: linear-gradient(to right, #fdf8e3, #f8f1d6);
-            border-right: 2px solid #d4c2a5;
-            box-shadow: inset -5px 0 10px rgba(0, 0, 0, 0.2);
+            border-right: 3px solid #7b5a33;
+            box-shadow: inset -5px 0 10px rgba(0, 0, 0, 0.3), inset -3px 0px 1px rgba(255, 255, 255, 0.5);
         }
 
         .book-right {
-            background: linear-gradient(to left, #fdf8e3, #f8f1d6);
-            box-shadow: inset 5px 0 10px rgba(0, 0, 0, 0.2);
+            box-shadow: inset 5px 0 10px rgba(0, 0, 0, 0.3), inset 3px 0px 1px rgba(255, 255, 255, 0.5);
         }
 
         /* Book Binding */
@@ -59,72 +74,127 @@
             top: 0;
             bottom: 0;
             left: 50%;
-            width: 10px;
-            background: #d4c2a5;
-            box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.3);
+            width: 20px;
+            background: linear-gradient(to bottom, #6a4b2e, #4d3521);
+            box-shadow: inset -3px 0 5px rgba(0, 0, 0, 0.5), 3px 0 5px rgba(255, 255, 255, 0.2);
             transform: translateX(-50%);
+            z-index: 10;
         }
 
-        /* Titles */
         h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #5a3e2b;
-            text-align: center;
-            border-bottom: 2px solid #c7b299;
-            padding-bottom: 10px;
-        }
+    font-size: 30px; /* Slightly larger for emphasis */
+    margin-bottom: 20px;
+    color: #5f3b22; /* Antique brown color */
+    text-align: center;
+    font-family: 'Garamond', serif; /* Elegant serif font for an antique feel */
+    letter-spacing: 2px;
+    text-transform: uppercase; /* Adds a classic, formal touch */
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3); /* Subtle shadow for a slightly raised look */
+    border-bottom: 2px solid #7b5a33; /* Simple decorative border for emphasis */
+    padding-bottom: 8px; /* Space between the text and border */
+}
+h1 {
+    position: absolute;
+    top: 20px;  /* Adjust this value to position it further down or up */
+    left: 50%;
+    transform: translateX(-50%); /* Centers it horizontally */
+    font-size: 60px;
+    margin: 0;
+    color: #5f3b22; /* Antique brown color */
+    text-align: center;
+    font-family: 'Garamond', serif; /* Elegant serif font */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid #7b5a33;
+    padding-bottom: 8px;
+}
+
+
+
+
+
+
 
         /* Author's Bio & Works */
         #author-bio {
-            font-size: 16px;
+            font-size: 18px;
             line-height: 1.8;
-            color: #5a3e2b;
-            margin-bottom: 20px;
+            color: #6b4c32;
+            text-indent: 30px;
+            text-align: justify;
         }
 
         .work-item {
-            margin: 8px 0;
-            padding: 10px;
-            background: #f9f4e8;
-            border: 1px solid #d4c2a5;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 12px 0;
+            padding: 10px 15px;
+            background: linear-gradient(to bottom, #f7e7c5, #edd8a9);
+            border: 2px solid #7b5a33;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Georgia', serif;
+            color: #4f361b;
+            background-image: repeating-linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.1) 0px,
+                rgba(255, 255, 255, 0.1) 1px,
+                transparent 2px,
+                transparent 15px
+            );
         }
 
         .work-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            background: #f0dba7;
         }
 
         /* Author Image */
         #author-image {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #d4c2a5;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-            margin: 0 auto 15px;
+            border: 5px solid #7b5a33;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.2);
+            margin: 0 auto 20px;
             display: block;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #7b5a33;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6a4b2e;
         }
 
         /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
     </style>
     <!-- Neo4j Driver -->
     <script src="https://cdn.jsdelivr.net/npm/neo4j-driver"></script>
 </head>
 <body>
+    <h1 id="author-name">Loading Author...</h1> <!-- Change from <h2> to <h1> -->
     <div class="book">
         <!-- Left Page: Author's Data -->
         <div class="book-left">
-            <img id="author-image" src="" alt="Author Image" style="display: none;">
-            <h2 id="author-name">Loading Author...</h2>
+            <!-- <img id="author-image" src="" alt="Author Image" style="display: none;">
+            <h2 id="author-name">Loading Author...</h2> -->
+            <h2>Biography</h2> <!-- Change the text here -->
+
             <p id="author-bio">Fetching data...</p>
         </div>
 
@@ -143,9 +213,10 @@
 
         async function fetchAuthorData(authorName) {
             const driver = neo4j.driver(
-                "bolt://localhost:7687",
-                neo4j.auth.basic("neo4j", "123456789")
+                "neo4j+s://833f1130.databases.neo4j.io",
+                neo4j.auth.basic("neo4j", "yEYB1EejTenVHaf3hebEhiXw8t0I_ynhjSCvv8odEmA")
             );
+
             const session = driver.session();
 
             try {
